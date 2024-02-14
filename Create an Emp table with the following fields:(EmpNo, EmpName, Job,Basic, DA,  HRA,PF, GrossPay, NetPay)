@@ -1,0 +1,234 @@
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show database
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mangalam           |
+| mysql              |
+| performance_schema |
+| school             |
+| sys                |
++--------------------+
+6 rows in set (0.21 sec)
+
+mysql> select *from Emp;
+ERROR 1046 (3D000): No database selected
+mysql> use mangalam;
+Database changed
+mysql> select *from Emp;
++-------+---------+---------------+-------+------+------+------+----------+--------+
+| EmpNO | EmpName | job           | Basic | DA   | HRA  | PF   | GrossPay | NetPay |
++-------+---------+---------------+-------+------+------+------+----------+--------+
+|     1 | aswin   | developer     |  1500 | 1600 | 1700 | 1800 |     1900 |   2000 |
+|     2 | arjun   | programmer    |  2500 | 2600 | 2700 | 2800 |     2900 |   3000 |
+|     3 | appu    | writer        |  3500 | 3600 | 3700 | 3800 |     3900 |   4000 |
+|     4 | anjana  | codder        |  4500 | 4600 | 4700 | 4800 |     4900 |   5000 |
+|     5 | vishnu  | web_developer |  5500 | 5600 | 5700 | 5800 |     5900 |   6000 |
++-------+---------+---------------+-------+------+------+------+----------+--------+
+5 rows in set (0.42 sec)
+
+mysql> select sum(GrossPay & NetPay);
+ERROR 1054 (42S22): Unknown column 'GrossPay' in 'field list'
+mysql> select sum('GrossPay' & 'NetPay');
++----------------------------+
+| sum('GrossPay' & 'NetPay') |
++----------------------------+
+|                          0 |
++----------------------------+
+1 row in set, 2 warnings (0.07 sec)
+
+mysql> select sum('GrossPay' & 'NetPay') from Emp;
++----------------------------+
+| sum('GrossPay' & 'NetPay') |
++----------------------------+
+|                          0 |
++----------------------------+
+1 row in set, 10 warnings (0.00 sec)
+
+mysql> select sum(GrossPay & NetPay) from Emp;
++------------------------+
+| sum(GrossPay & NetPay) |
++------------------------+
+|                  19312 |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(GrossPay & NetPay) from Emp;
++------------------------+
+| sum(GrossPay & NetPay) |
++------------------------+
+|                  19312 |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(GrossPay ) from Emp;
++----------------+
+| sum(GrossPay ) |
++----------------+
+|          19500 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(GrossPay&NetPay) from Emp;
++----------------------+
+| sum(GrossPay&NetPay) |
++----------------------+
+|                19312 |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> select min(basic)from Emp;
++------------+
+| min(basic) |
++------------+
+|       1500 |
++------------+
+1 row in set (0.07 sec)
+
+mysql> select min(basic)from Emp where department;
+ERROR 1054 (42S22): Unknown column 'department' in 'where clause'
+mysql> select Emp,EmpName,job,Basic min(basic) from Emp where
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'min(basic) from Emp where' at line 1
+mysql> select Emp,EmpName,job,Basic min(basic) from Emp ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'min(basic) from Emp' at line 1
+mysql> select Emp,EmpName,job,Basic,min(basic) from Emp ;
+ERROR 1054 (42S22): Unknown column 'Emp' in 'field list'
+mysql> select Emp,EmpName,job,Basic,min(basic)  ;
+ERROR 1054 (42S22): Unknown column 'Emp' in 'field list'
+mysql> select Emp,EmpName,job,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'Emp' in 'field list'
+mysql> select min(basic)from Emp where department;
+ERROR 1054 (42S22): Unknown column 'department' in 'where clause'
+mysql> select min(basic)from Emp;
++------------+
+| min(basic) |
++------------+
+|       1500 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select Emp_no,min(basic)from Emp;
+ERROR 1054 (42S22): Unknown column 'Emp_no' in 'field list'
+mysql> select EmpNo,min(basic)from Emp;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'mangalam.Emp.EmpNO'; this is incompatible with sql_mode=only_full_group_by
+mysql> select EmpNo,min(basic) from Emp;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'mangalam.Emp.EmpNO'; this is incompatible with sql_mode=only_full_group_by
+mysql> select min(basic) from Emp;
++------------+
+| min(basic) |
++------------+
+|       1500 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select EmpNo,EmpName,job,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'EmpNo' in 'field list'
+mysql> select EmpNO,EmpName,job,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'EmpNO' in 'field list'
+mysql> select EmpNO,EmpName,job Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IN (select MIN(Basic) from Emp Group BY job)' at line 1
+mysql> select EmpNO,EmpName,job ,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'EmpNO' in 'field list'
+mysql> select EmpNo,EmpName,job ,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'EmpNo' in 'field list'
+mysql> select EmpNO,EmpName,job ,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'EmpNO' in 'field list'
+mysql> select EmpN0,EmpName,job ,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'EmpN0' in 'field list'
+mysql> use mangalam;
+Database changed
+mysql> select EmpNO,EmpName,job ,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'EmpNO' in 'field list'
+mysql> select  EmpNO,EmpName,job ,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'EmpNO' in 'field list'
+mysql> select EmpNO,EmpName,job ,Basic IN (select MIN(Basic) from Emp Group BY job);
+ERROR 1054 (42S22): Unknown column 'EmpNO' in 'field list'
+mysql> select NetPay,EmpName
+    -> from Emp
+    -> where NetPay<=10000
+    -> order by NetPay;
++--------+---------+
+| NetPay | EmpName |
++--------+---------+
+|   2000 | aswin   |
+|   3000 | arjun   |
+|   4000 | appu    |
+|   5000 | anjana  |
+|   6000 | vishnu  |
++--------+---------+
+5 rows in set (0.07 sec)
+
+mysql>  select NetPay,EmpName
+    ->     -> from Emp
+    ->     -> where NetPay<=10000
+    ->     -> where NetPay<=10000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from Emp
+    -> where NetPay<=10000
+    -> where NetPay<=10000' at line 2
+mysql>   updade Emp
+    ->     -> set NetPay= NetPay + 1200;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'updade Emp
+    -> set NetPay= NetPay + 1200' at line 1
+mysql>   updade Emp
+    -> set NetPay= NetPay + 1200;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'updade Emp
+set NetPay= NetPay + 1200' at line 1
+mysql> set NetPay = NetPay + 1200;
+ERROR 1193 (HY000): Unknown system variable 'NetPay'
+mysql> update Emp
+    -> set NetPay = NetPay + 1200;
+Query OK, 5 rows affected (0.14 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select *from emp
+    -> ;
++-------+---------+---------------+-------+------+------+------+----------+--------+
+| EmpNO | EmpName | job           | Basic | DA   | HRA  | PF   | GrossPay | NetPay |
++-------+---------+---------------+-------+------+------+------+----------+--------+
+|     1 | aswin   | developer     |  1500 | 1600 | 1700 | 1800 |     1900 |   3200 |
+|     2 | arjun   | programmer    |  2500 | 2600 | 2700 | 2800 |     2900 |   4200 |
+|     3 | appu    | writer        |  3500 | 3600 | 3700 | 3800 |     3900 |   5200 |
+|     4 | anjana  | codder        |  4500 | 4600 | 4700 | 4800 |     4900 |   6200 |
+|     5 | vishnu  | web_developer |  5500 | 5600 | 5700 | 5800 |     5900 |   7200 |
++-------+---------+---------------+-------+------+------+------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select *from Emp
+    -> where GrossPay BETWEEN 1000 AND 5000;
++-------+---------+------------+-------+------+------+------+----------+--------+
+| EmpNO | EmpName | job        | Basic | DA   | HRA  | PF   | GrossPay | NetPay |
++-------+---------+------------+-------+------+------+------+----------+--------+
+|     1 | aswin   | developer  |  1500 | 1600 | 1700 | 1800 |     1900 |   3200 |
+|     2 | arjun   | programmer |  2500 | 2600 | 2700 | 2800 |     2900 |   4200 |
+|     3 | appu    | writer     |  3500 | 3600 | 3700 | 3800 |     3900 |   5200 |
+|     4 | anjana  | codder     |  4500 | 4600 | 4700 | 4800 |     4900 |   6200 |
++-------+---------+------------+-------+------+------+------+----------+--------+
+4 rows in set (0.07 sec)
+
+mysql> select MAX(NetPay)
+    -> from emp;
++-------------+
+| MAX(NetPay) |
++-------------+
+|        7200 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select MAX(NetPay)
